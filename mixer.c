@@ -961,11 +961,11 @@ int mixer_consume_event(struct mixer *mixer)
  * so that further events can be alerted.
  *
  * @param mixer A mixer handle.
- * @param ev snd_ctl_event pointer where event needs to be read
+ * @param ev ctl_event pointer where event needs to be read
  * @returns 0 on success.  -errno on failure.
  * @ingroup libtinyalsa-mixer
  */
-int mixer_read_event(struct mixer *mixer, struct snd_ctl_event *ev)
+int mixer_read_event(struct mixer *mixer, struct ctl_event *ev)
 {
     struct mixer_ctl_group *grp;
     ssize_t count = 0;
@@ -974,7 +974,7 @@ int mixer_read_event(struct mixer *mixer, struct snd_ctl_event *ev)
         grp = mixer->hw_grp;
         if (grp->event_cnt) {
             grp->event_cnt--;
-            count = grp->ops->read_event(grp->data, ev, sizeof(*ev));
+            count = grp->ops->read_event(grp->data, (struct snd_ctl_event *)ev, sizeof(*ev));
             return (count >= 0) ? 0 : -errno;
         }
     }
@@ -983,7 +983,7 @@ int mixer_read_event(struct mixer *mixer, struct snd_ctl_event *ev)
         grp = mixer->virt_grp;
         if (grp->event_cnt) {
             grp->event_cnt--;
-            count = grp->ops->read_event(grp->data, ev, sizeof(*ev));
+            count = grp->ops->read_event(grp->data, (struct snd_ctl_event *)ev, sizeof(*ev));
             return (count >= 0) ? 0 : -errno;
         }
     }
