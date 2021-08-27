@@ -39,5 +39,8 @@ if (test "x${with_glib}" = "xyes"); then
         AC_SUBST(GLIB_CFLAGS)
         AC_SUBST(GLIB_LIBS)
 fi
+
+AM_CONDITIONAL(USE_GLIB, test "x${with_glib}" = "xyes")
+
 AC_CONFIG_FILES([ Makefile tinyalsa.pc ])
 AC_OUTPUT
