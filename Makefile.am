@@ -34,3 +34,48 @@ libtinyalsa_la_CFLAGS += $(GLIB_CFLAGS) -Dstrlcpy=g_strlcpy -Dstrlcat=g_strlcat 
 libtinyalsa_la_CFLAGS += -D__unused=__attribute__\(\(__unused__\)\)
 libtinyalsa_la_CFLAGS += -DNDEBUG
 libtinyalsa_la_LDFLAGS = -shared -avoid-version
+
+bin_PROGRAMS = qtitinyplay
+
+qtitinyplay_SOURCES := ${top_srcdir}/tinyplay.c
+qtitinyplay_la_LIBADD = $(GLIB_LIBS) -llog -lcutils
+qtitinyplay_la_CFLAGS := $(GLIB_CFLAGS) -Dstrlcpy=g_strlcpy -Dstrlcat=g_strlcat -include glib.h
+qtitinyplay_la_CFLAGS += -D__unused=__attribute__\(\(__unused__\)\)
+qtitinyplay_LDADD = libtinyalsa.la $(GLIB_LIBS) -lcutils -ldl
+qtitinyplay_la_LDFLAGS = -shared -avoid-version
+
+bin_PROGRAMS += qtitinycap
+
+qtitinycap_SOURCES := ${top_srcdir}/tinycap.c
+qtitinycap_la_LIBADD = $(GLIB_LIBS) -llog -lcutils
+qtitinycap_CFLAGS := $(AM_CFLAGS) $(GLIB_CFLAGS) -Dstrlcpy=g_strlcpy -Dstrlcat=g_strlcat -include glib.h
+qtitinycap_CFLAGS += -D__unused=__attribute__\(\(__unused__\)\)
+qtitinycap_LDADD = libtinyalsa.la $(GLIB_LIBS) -lcutils -ldl
+qtitinycap_la_LDFLAGS = -shared -avoid-version
+
+bin_PROGRAMS += qtitinymix
+
+qtitinymix_SOURCES := ${top_srcdir}/tinymix.c
+qtitinymix_la_LIBADD = $(GLIB_LIBS) -llog -lcutils
+qtitinymix_la_CFLAGS := $(GLIB_CFLAGS) -Dstrlcpy=g_strlcpy -Dstrlcat=g_strlcat -include glib.h
+qtitinymix_la_CFLAGS += -D__unused=__attribute__\(\(__unused__\)\)
+qtitinymix_LDADD = libtinyalsa.la $(GLIB_LIBS) -lcutils -ldl
+qtitinymix_la_LDFLAGS = -shared -avoid-version
+
+bin_PROGRAMS += qtitinyhostless
+
+qtitinyhostless_SOURCES := ${top_srcdir}/tinyhostless.c
+qtitinyhostless_la_LIBADD = $(GLIB_LIBS) -llog -lcutils
+qtitinyhostless_la_CFLAGS := $(GLIB_CFLAGS) -Dstrlcpy=g_strlcpy -Dstrlcat=g_strlcat -include glib.h
+qtitinyhostless_la_CFLAGS += -D__unused=__attribute__\(\(__unused__\)\)
+qtitinyhostless_LDADD = libtinyalsa.la $(GLIB_LIBS) -lcutils -ldl
+qtitinyhostless_la_LDFLAGS = -shared -avoid-version
+
+bin_PROGRAMS += qtitinypcminfo
+
+qtitinypcminfo_SOURCES := ${top_srcdir}/tinypcminfo.c
+qtitinypcminfo_la_LIBADD = $(GLIB_LIBS) -llog -lcutils
+qtitinypcminfo_la_CFLAGS := $(GLIB_CFLAGS) -Dstrlcpy=g_strlcpy -Dstrlcat=g_strlcat -include glib.h
+qtitinypcminfo_la_CFLAGS += -D__unused=__attribute__\(\(__unused__\)\)
+qtitinypcminfo_LDADD = libtinyalsa.la $(GLIB_LIBS) -lcutils -ldl
+qtitinypcminfo_la_LDFLAGS = -shared -avoid-version
