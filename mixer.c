@@ -178,7 +178,7 @@ static int mixer_grp_open(struct mixer *mixer,
         ctl->mixer = mixer;
         ctl->info = grp->elem_info + n;
         ctl->info->id.numid = eid[n].numid;
-        srlcpy((char *)ctl->info->id.name, (char *)eid[n].name,
+        strlcpy((char *)ctl->info->id.name, (char *)eid[n].name,
                 SNDRV_CTL_ELEM_ID_NAME_MAXLEN);
         ctl->info->id.name[SNDRV_CTL_ELEM_ID_NAME_MAXLEN - 1] = 0;
     }
