@@ -26,6 +26,10 @@
 ** WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
 ** OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 ** IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+**
+** Changes from Qualcomm Innovation Center are provided under the following license:
+** Copyright (c) 2023 Qualcomm Innovation Center, Inc. All rights reserved.
+** SPDX-License-Identifier: BSD-3-Clause-Clear
 **/
 
 #include <stdio.h>
@@ -56,7 +60,7 @@ static void pcm_hw_close(void *data)
 {
     struct pcm_hw_data *hw_data = data;
 
-    if (hw_data->fd > 0)
+    if (hw_data->fd >= 0)
         close(hw_data->fd);
 
     free(hw_data);
