@@ -50,7 +50,7 @@ library_include_HEADERS = $(h_sources)
 lib_LTLIBRARIES = libtinyalsa.la
 libtinyalsa_la_SOURCES = $(c_sources)
 if BUILDSYSTEM_OPENWRT
-libtinyalsa_la_LIBADD = $(GLIB_LIBS) -llog -lcutils -lexpat -lagm -lar_gsl
+libtinyalsa_la_LIBADD = $(GLIB_LIBS) -llog -lcutils -lsndcardparser -lutils
 else
 libtinyalsa_la_LIBADD = $(GLIB_LIBS) -llog -lcutils
 endif
