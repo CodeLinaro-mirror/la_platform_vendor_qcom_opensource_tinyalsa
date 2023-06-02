@@ -8,7 +8,8 @@ AM_CFLAGS = -Wundef \
         -g -O0 \
         -fno-inline \
         -fno-short-enums \
-        -fpic
+        -fpic \
+        -fstack-protector-all
 
 if BUILDSYSTEM_OPENWRT
 
