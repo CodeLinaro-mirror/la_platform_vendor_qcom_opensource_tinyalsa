@@ -50,7 +50,7 @@ library_include_HEADERS = $(h_sources)
 
 lib_LTLIBRARIES = libtinyalsa.la
 libtinyalsa_la_SOURCES = $(c_sources)
-libtinyalsa_la_LIBADD = $(GLIB_LIBS) -llog -lcutils
+libtinyalsa_la_LIBADD = $(GLIB_LIBS)
 libtinyalsa_la_CFLAGS := $(AM_CFLAGS)
 libtinyalsa_la_CFLAGS += $(GLIB_CFLAGS) -Dstrlcpy=g_strlcpy -Dstrlcat=g_strlcat -include glib.h
 libtinyalsa_la_CFLAGS += -D__unused=__attribute__\(\(__unused__\)\)
@@ -60,44 +60,44 @@ libtinyalsa_la_LDFLAGS = -shared -avoid-version
 bin_PROGRAMS = qtitinyplay
 
 qtitinyplay_SOURCES := ./tinyplay.c
-qtitinyplay_la_LIBADD = $(GLIB_LIBS) -llog -lcutils
+qtitinyplay_la_LIBADD = $(GLIB_LIBS)
 qtitinyplay_la_CFLAGS := $(GLIB_CFLAGS) -Dstrlcpy=g_strlcpy -Dstrlcat=g_strlcat -include glib.h
 qtitinyplay_la_CFLAGS += -D__unused=__attribute__\(\(__unused__\)\)
-qtitinyplay_LDADD = libtinyalsa.la $(GLIB_LIBS) -lcutils -ldl
+qtitinyplay_LDADD = libtinyalsa.la $(GLIB_LIBS) -ldl
 qtitinyplay_la_LDFLAGS = -shared -avoid-version
 
 bin_PROGRAMS += qtitinycap
 
 qtitinycap_SOURCES := ./tinycap.c
-qtitinycap_la_LIBADD = $(GLIB_LIBS) -llog -lcutils
+qtitinycap_la_LIBADD = $(GLIB_LIBS)
 qtitinycap_CFLAGS := $(AM_CFLAGS) $(GLIB_CFLAGS) -Dstrlcpy=g_strlcpy -Dstrlcat=g_strlcat -include glib.h
 qtitinycap_CFLAGS += -D__unused=__attribute__\(\(__unused__\)\)
-qtitinycap_LDADD = libtinyalsa.la $(GLIB_LIBS) -lcutils -ldl
+qtitinycap_LDADD = libtinyalsa.la $(GLIB_LIBS) -ldl
 qtitinycap_la_LDFLAGS = -shared -avoid-version
 
 bin_PROGRAMS += qtitinymix
 
 qtitinymix_SOURCES := ./tinymix.c
-qtitinymix_la_LIBADD = $(GLIB_LIBS) -llog -lcutils
+qtitinymix_la_LIBADD = $(GLIB_LIBS)
 qtitinymix_la_CFLAGS := $(GLIB_CFLAGS) -Dstrlcpy=g_strlcpy -Dstrlcat=g_strlcat -include glib.h
 qtitinymix_la_CFLAGS += -D__unused=__attribute__\(\(__unused__\)\)
-qtitinymix_LDADD = libtinyalsa.la $(GLIB_LIBS) -lcutils -ldl
+qtitinymix_LDADD = libtinyalsa.la $(GLIB_LIBS) -ldl
 qtitinymix_la_LDFLAGS = -shared -avoid-version
 
 bin_PROGRAMS += qtitinyhostless
 
 qtitinyhostless_SOURCES := ./tinyhostless.c
-qtitinyhostless_la_LIBADD = $(GLIB_LIBS) -llog -lcutils
+qtitinyhostless_la_LIBADD = $(GLIB_LIBS)
 qtitinyhostless_la_CFLAGS := $(GLIB_CFLAGS) -Dstrlcpy=g_strlcpy -Dstrlcat=g_strlcat -include glib.h
 qtitinyhostless_la_CFLAGS += -D__unused=__attribute__\(\(__unused__\)\)
-qtitinyhostless_LDADD = libtinyalsa.la $(GLIB_LIBS) -lcutils -ldl
+qtitinyhostless_LDADD = libtinyalsa.la $(GLIB_LIBS) -ldl
 qtitinyhostless_la_LDFLAGS = -shared -avoid-version
 
 bin_PROGRAMS += qtitinypcminfo
 
 qtitinypcminfo_SOURCES := ./tinypcminfo.c
-qtitinypcminfo_la_LIBADD = $(GLIB_LIBS) -llog -lcutils
+qtitinypcminfo_la_LIBADD = $(GLIB_LIBS)
 qtitinypcminfo_la_CFLAGS := $(GLIB_CFLAGS) -Dstrlcpy=g_strlcpy -Dstrlcat=g_strlcat -include glib.h
 qtitinypcminfo_la_CFLAGS += -D__unused=__attribute__\(\(__unused__\)\)
-qtitinypcminfo_LDADD = libtinyalsa.la $(GLIB_LIBS) -lcutils -ldl
+qtitinypcminfo_LDADD = libtinyalsa.la $(GLIB_LIBS) -ldl
 qtitinypcminfo_la_LDFLAGS = -shared -avoid-version
