@@ -342,7 +342,9 @@ int mixer_subscribe_events(struct mixer *mixer, int subscribe);
 int mixer_wait_event(struct mixer *mixer, int timeout);
 int mixer_consume_event(struct mixer *mixer);
 int mixer_read_event(struct mixer *mixer, struct ctl_event *ev);
-
+struct mixer_ctl *mixer_get_ctl_by_name_and_device(struct mixer *mixer,
+                                                   const char *name,
+                                                   unsigned int device);
 #if defined(__cplusplus)
 }  /* extern "C" */
 #endif
