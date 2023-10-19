@@ -24,11 +24,16 @@
 ** LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 ** OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 ** DAMAGE.
+**
+** Changes from Qualcomm Innovation Center are provided under the following license:
+** Copyright (c) 2023 Qualcomm Innovation Center, Inc. All rights reserved.
+** SPDX-License-Identifier: BSD-3-Clause-Clear
 */
 
 #include <tinyalsa/asoundlib.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <signal.h>
 #include <string.h>
@@ -82,11 +87,12 @@ int main(int argc, char **argv)
     unsigned int period_size = 1024;
     unsigned int period_count = 4;
     unsigned int cap_time = 0;
+    bool bits_packed = false;
     enum pcm_format format;
 
     if (argc < 2) {
         fprintf(stderr, "Usage: %s file.wav [-D card] [-d device]"
-                " [-c channels] [-r rate] [-b bits] [-p period_size]"
+                " [-c channels] [-r rate] [-b bits] [-a bits_packed] [-p period_size]"
                 " [-n n_periods] [-T capture time]\n", argv[0]);
         return 1;
     }
@@ -116,6 +122,9 @@ int main(int argc, char **argv)
             argv++;
             if (*argv)
                 bits = atoi(*argv);
+        } else if (strcmp(*argv, "-a") == 0) {
+            argv++;
+            bits_packed = true;
         } else if (strcmp(*argv, "-D") == 0) {
             argv++;
             if (*argv)
@@ -151,7 +160,10 @@ int main(int argc, char **argv)
         format = PCM_FORMAT_S32_LE;
         break;
     case 24:
-        format = PCM_FORMAT_S24_LE;
+        if (bits_packed)
+            format = PCM_FORMAT_S24_3LE;
+        else
+            format = PCM_FORMAT_S24_LE;
         break;
     case 16:
         format = PCM_FORMAT_S16_LE;
