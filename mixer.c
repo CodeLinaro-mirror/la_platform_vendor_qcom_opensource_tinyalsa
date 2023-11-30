@@ -181,6 +181,7 @@ static int mixer_grp_open(struct mixer *mixer,
         ctl->info->id.numid = eid[n].numid;
         strlcpy((char *)ctl->info->id.name, (char *)eid[n].name,
                 SNDRV_CTL_ELEM_ID_NAME_MAXLEN);
+        ctl->info->id.device = eid[n].device;
     }
 
     grp->data = data;
@@ -410,6 +411,36 @@ struct mixer_ctl *mixer_get_ctl_by_name(struct mixer *mixer, const char *name)
         for (n = 0; n < grp->count; n++)
         if (!strcmp(name, (char*) grp->elem_info[n].id.name))
             return mixer_get_ctl(mixer, n + hw_ctl_count);
+    }
+
+    return NULL;
+}
+
+struct mixer_ctl *mixer_get_ctl_by_name_and_device(struct mixer *mixer, const char *name, unsigned int device)
+{
+    struct mixer_ctl_group *grp;
+    unsigned int n;
+    int hw_ctl_count;
+
+    if (!mixer)
+        return NULL;
+    hw_ctl_count = mixer_grp_get_count(mixer->hw_grp);
+    if (mixer->hw_grp) {
+        grp = mixer->hw_grp;
+
+        for (n = 0; n < grp->count; n++) {
+             if (!strcmp(name, (char*) grp->elem_info[n].id.name) && (device == grp->elem_info[n].id.device))
+                 return mixer_get_ctl(mixer, n);
+        }
+    }
+
+    if (mixer->virt_grp) {
+        grp = mixer->virt_grp;
+
+        for (n = 0; n < grp->count; n++) {
+             if (!strcmp(name, (char*) grp->elem_info[n].id.name) && (device == grp->elem_info[n].id.device))
+                 return mixer_get_ctl(mixer, n + hw_ctl_count);
+             }
     }
 
     return NULL;
