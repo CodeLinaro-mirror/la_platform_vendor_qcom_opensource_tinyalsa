@@ -56,7 +56,7 @@ static void pcm_hw_close(void *data)
 {
     struct pcm_hw_data *hw_data = data;
 
-    if (hw_data->fd > 0)
+    if (hw_data->fd >= 0)
         close(hw_data->fd);
 
     free(hw_data);
