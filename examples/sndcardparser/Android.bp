@@ -1,7 +1,0 @@
-cc_library {
-    name: "liboss_sndcardparser_example",
-    vendor: true,
-    srcs: ["sample_sndcardparser.c"],
-    cflags: ["-Werror"],
-}
-
