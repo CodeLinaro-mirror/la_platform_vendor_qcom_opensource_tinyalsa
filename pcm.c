@@ -26,6 +26,7 @@
 ** DAMAGE.
 */
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
@@ -253,8 +254,8 @@ static void param_init(struct snd_pcm_hw_params *p)
 struct pcm {
     int fd;
     unsigned int flags;
-    int running:1;
-    int prepared:1;
+    bool running:1;
+    bool prepared:1;
     int underruns;
     unsigned int buffer_size;
     unsigned int boundary;
