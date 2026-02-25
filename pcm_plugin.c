@@ -723,7 +723,10 @@ static int pcm_plug_open(unsigned int card, unsigned int device,
 
     dl_hdl = dlopen(so_name, RTLD_NOW);
     if (!dl_hdl) {
-        fprintf(stderr, "%s: unable to open %s: %s\n", __func__, so_name, dlerror());
+        /* Check if dlerror() returns NULL to avoid potential segmentation fault */
+        const char *dl_error = dlerror();
+        fprintf(stderr, "%s: unable to open %s: %s\n", __func__, so_name,
+                dl_error ? dl_error : "Unknown error");
         goto err_dl_open;
     } else {
         fprintf(stderr, "%s: dlopen successful for %s\n", __func__, so_name);
@@ -752,8 +755,10 @@ static int pcm_plug_open(unsigned int card, unsigned int device,
     printf("%s - %s\n", __func__, open_fn);
     plug_data->plugin_open_fn = dlsym(dl_hdl, open_fn);
     if (!plug_data->plugin_open_fn) {
+        /* Check if dlerror() returns NULL to avoid potential segmentation fault */
+        const char *dl_error = dlerror();
         fprintf(stderr, "%s: dlsym to open fn failed, err = '%s'\n",
-                __func__, dlerror());
+                __func__, dl_error ? dl_error : "Unknown error");
         goto err_dlsym;
     }
 

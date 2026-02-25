@@ -466,8 +466,10 @@ int mixer_plugin_open(unsigned int card, void **data,
 
     plug_data->mixer_plugin_open_fn = dlsym(dl_hdl, open_fn_name);
     if (!plug_data->mixer_plugin_open_fn) {
+        /* Get dlerror message safely - dlerror() may return NULL */
+        const char *dl_error = dlerror();
         fprintf(stderr, "%s: dlsym open fn failed: %s\n",
-                __func__, dlerror());
+                __func__, dl_error ? dl_error : "unknown error");
         goto err_open_fn_name;
     }
     ret = plug_data->mixer_plugin_open_fn(&plugin, card);

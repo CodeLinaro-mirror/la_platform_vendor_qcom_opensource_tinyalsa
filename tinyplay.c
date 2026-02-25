@@ -84,6 +84,7 @@ int main(int argc, char **argv)
     unsigned int period_count = 4;
     char *filename;
     int more_chunks = 1;
+    int fmt_found = 0;  /* Track if format chunk was found */
 
     if (argc < 2) {
         fprintf(stderr, "Usage: %s file.wav [-D card] [-d device] [-p period_size]"
@@ -112,6 +113,7 @@ int main(int argc, char **argv)
         switch (chunk_header.id) {
         case ID_FMT:
             fread(&chunk_fmt, sizeof(chunk_fmt), 1, file);
+            fmt_found = 1;  /* Mark format chunk as found */
             /* If the format header is larger, skip the rest */
             if (chunk_header.sz > sizeof(chunk_fmt))
                 fseek(file, chunk_header.sz - sizeof(chunk_fmt), SEEK_CUR);
@@ -127,6 +129,13 @@ int main(int argc, char **argv)
         }
     } while (more_chunks);
 
+    /* Ensure format chunk was found before using chunk_fmt */
+    if (!fmt_found) {
+        fprintf(stderr, "Error: No format chunk found in '%s'\n", filename);
+        fclose(file);
+        return 1;
+    }
+
     /* parse command line arguments */
     argv += 2;
     while (*argv) {
@@ -134,18 +143,15 @@ int main(int argc, char **argv)
             argv++;
             if (*argv)
                 device = atoi(*argv);
-        }
-        if (strcmp(*argv, "-p") == 0) {
+        } else if (strcmp(*argv, "-p") == 0) {
             argv++;
             if (*argv)
                 period_size = atoi(*argv);
-        }
-        if (strcmp(*argv, "-n") == 0) {
+        } else if (strcmp(*argv, "-n") == 0) {
             argv++;
             if (*argv)
                 period_count = atoi(*argv);
-        }
-        if (strcmp(*argv, "-D") == 0) {
+        } else if (strcmp(*argv, "-D") == 0) {
             argv++;
             if (*argv)
                 card = atoi(*argv);
