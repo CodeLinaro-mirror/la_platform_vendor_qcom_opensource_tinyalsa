@@ -81,9 +81,8 @@ static int mixer_plug_get_elem_id(struct mixer_plug_data *plug_data,
     id->numid = offset;
     id->iface = ctl->iface;
 
-    strncpy((char *)id->name, (char *)ctl->name,
-            sizeof(id->name) - 1);
-    ((char *)id->name)[sizeof(id->name) - 1] = '\0';
+    strlcpy((char *)id->name, (char *)ctl->name,
+            sizeof(id->name));
 
     return 0;
 }
@@ -99,10 +98,9 @@ static int mixer_plug_info_enum(struct snd_control *ctl,
     if (einfo->value.enumerated.item >= val->items)
         return -EINVAL;
 
-    strncpy(einfo->value.enumerated.name,
+    strlcpy(einfo->value.enumerated.name,
             val->texts[einfo->value.enumerated.item],
-            sizeof(einfo->value.enumerated.name) - 1);
-    einfo->value.enumerated.name[sizeof(einfo->value.enumerated.name) - 1] = '\0';
+            sizeof(einfo->value.enumerated.name));
 
     return 0;
 }
