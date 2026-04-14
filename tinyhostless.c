@@ -306,8 +306,13 @@ int play_sample(unsigned int card, unsigned int p_device,
     signal(SIGHUP, stream_close);
     signal(SIGTERM, stream_close);
 
-    if (pcm_cap != NULL) pcm_start(pcm_cap);
-    if (pcm_play != NULL) pcm_start(pcm_play);
+    if (pcm_cap != NULL && pcm_play != NULL) {
+        pcm_start(pcm_cap);
+        pcm_start(pcm_play);
+    } else {
+        rc = EINVAL;
+        goto cleanup;
+    }
 
     clock_gettime(CLOCK_MONOTONIC, &now);
     end.tv_sec = now.tv_sec + play_cap_time;
@@ -324,6 +329,7 @@ int play_sample(unsigned int card, unsigned int p_device,
             if (pcm_write(pcm_play, buffer, size)) {
                 fprintf(stderr, "Unable to write to PCM playback device %u (%s)\n",
                         p_device, pcm_get_error(pcm_play));
+                rc = errno;
                 break;
             }
         } else {
@@ -337,6 +343,7 @@ int play_sample(unsigned int card, unsigned int p_device,
         }
     } while(!close_h);
 
+cleanup:
     if (buffer)
         free(buffer);
     if (pcm_play != NULL)
