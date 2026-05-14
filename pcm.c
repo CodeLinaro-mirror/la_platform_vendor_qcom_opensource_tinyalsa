@@ -867,11 +867,18 @@ int pcm_params_to_string(struct pcm_params *params, char *string, unsigned int s
 
 int pcm_params_format_test(struct pcm_params *params, enum pcm_format format)
 {
+    struct pcm_mask *mask;
     unsigned int alsa_format = pcm_format_to_alsa(format);
 
     if (alsa_format == SNDRV_PCM_FORMAT_S16_LE && format != PCM_FORMAT_S16_LE)
         return 0; /* caution: format not recognized is equivalent to S16_LE */
-    return pcm_mask_test(pcm_params_get_mask(params, PCM_PARAM_FORMAT), alsa_format);
+
+    /* Check if mask is valid before dereferencing */
+    mask = pcm_params_get_mask(params, PCM_PARAM_FORMAT);
+    if (!mask)
+        return 0; /* Return 0 if mask is NULL to indicate format not supported */
+
+    return pcm_mask_test(mask, alsa_format);
 }
 
 int pcm_close(struct pcm *pcm)

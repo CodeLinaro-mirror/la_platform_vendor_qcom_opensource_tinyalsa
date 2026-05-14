@@ -85,52 +85,61 @@ int main(int argc, char **argv)
    /* parse command line arguments */
     argv += 1;
     while (*argv) {
-        if (strcmp(*argv, "-P") == 0) {
+
+    if ((*argv)[0] == '-' && (*argv)[1] != '\0') {
+        switch ((*argv)[1]) {
+        case 'P':
             argv++;
-            if (*argv)
-                p_device = atoi(*argv);
-        }
-        if (strcmp(*argv, "-C") == 0) {
+            if (*argv) p_device = atoi(*argv);
+            break;
+
+        case 'C':
             argv++;
-            if (*argv)
-                c_device = atoi(*argv);
-        }
-        if (strcmp(*argv, "-p") == 0) {
+            if (*argv) c_device = atoi(*argv);
+            break;
+
+        case 'p':
             argv++;
-            if (*argv)
-                period_size = atoi(*argv);
-        }
-        if (strcmp(*argv, "-n") == 0) {
+            if (*argv) period_size = atoi(*argv);
+            break;
+
+        case 'n':
             argv++;
-            if (*argv)
-                period_count = atoi(*argv);
-        }
-        if (strcmp(*argv, "-c") == 0) {
+            if (*argv) period_count = atoi(*argv);
+            break;
+
+        case 'c':
             argv++;
-            if (*argv)
-                num_channels = atoi(*argv);
-        }
-        if (strcmp(*argv, "-r") == 0) {
+            if (*argv) num_channels = atoi(*argv);
+            break;
+
+        case 'r':
             argv++;
-            if (*argv)
-                sample_rate = atoi(*argv);
-        }
-        if (strcmp(*argv, "-T") == 0) {
+            if (*argv) sample_rate = atoi(*argv);
+            break;
+
+        case 'T':
             argv++;
-            if (*argv)
-                play_cap_time = atoi(*argv);
-        }
-        if (strcmp(*argv, "-D") == 0) {
+            if (*argv) play_cap_time = atoi(*argv);
+            break;
+
+        case 'D':
             argv++;
-            if (*argv)
-                card = atoi(*argv);
-        }
-        if (strcmp(*argv, "-l") == 0) {
+            if (*argv) card = atoi(*argv);
+            break;
+
+        case 'l':
             do_loopback = 1;
+            break;
+
+        default:
+            break;
         }
-        if (*argv)
-            argv++;
     }
+
+    if (*argv)
+        argv++;
+   }
 
     if (p_device == TINYHOSTLESS_DEVICE_UNDEFINED &&
         c_device == TINYHOSTLESS_DEVICE_UNDEFINED) {
@@ -275,12 +284,19 @@ int play_sample(unsigned int card, unsigned int p_device,
         printf("Duration in sec: forever\n");
 
     if (do_loopback) {
+        /* Ensure pcm_cap is valid before using it for buffer size calculation */
+        if (pcm_cap == NULL) {
+            fprintf(stderr, "Capture device required for loopback mode\n");
+            if (pcm_play != NULL) pcm_close(pcm_play);
+            return EINVAL;
+        }
         size = pcm_frames_to_bytes(pcm_cap, pcm_get_buffer_size(pcm_cap));
         buffer = malloc(size);
         if (!buffer) {
             fprintf(stderr, "Unable to allocate %d bytes\n", size);
-            pcm_close(pcm_play);
-            pcm_close(pcm_cap);
+            /* Check for NULL before closing PCM devices */
+            if (pcm_play != NULL) pcm_close(pcm_play);
+            if (pcm_cap != NULL) pcm_close(pcm_cap);
             return ENOMEM;
         }
     }

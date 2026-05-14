@@ -115,8 +115,7 @@ int main(int argc, char **argv)
             argv++;
             if (*argv)
                 card = atoi(*argv);
-        }
-        if (strcmp(*argv, "-d") == 0) {
+        } else if (strcmp(*argv, "-d") == 0) {
             argv++;
             if (*argv)
                 device = atoi(*argv);

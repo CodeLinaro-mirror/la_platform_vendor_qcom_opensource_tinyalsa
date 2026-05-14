@@ -138,7 +138,7 @@ static int isnumber(const char *str) {
 static void tinymix_list_controls(struct mixer *mixer)
 {
     struct mixer_ctl *ctl;
-    const char *name, *type;
+    const char *name = NULL, *type;
     unsigned int num_ctls, num_values;
     unsigned int i;
 
@@ -160,6 +160,10 @@ static void tinymix_list_controls(struct mixer *mixer)
         name = mixer_ctl_get_name(ctl);
         type = mixer_ctl_get_type_string(ctl);
         num_values = mixer_ctl_get_num_values(ctl);
+        /* Check if name is NULL to prevent dereferencing NULL pointer */
+        if (name == NULL) {
+            name = "<unknown>";
+        }
         if (g_tabs_only)
             printf("%d\t%s\t%d\t%s\t", i, type, num_values, name);
         else
@@ -173,13 +177,17 @@ static void tinymix_print_enum(struct mixer_ctl *ctl, const char *space,
 {
     unsigned int num_enums;
     unsigned int i;
-    const char *string;
+    const char *string = NULL;
     int control_value = mixer_ctl_get_value(ctl, 0);
 
     if (print_all) {
         num_enums = mixer_ctl_get_num_enums(ctl);
         for (i = 0; i < num_enums; i++) {
             string = mixer_ctl_get_enum_string(ctl, i);
+            /* Check if string is NULL to prevent dereferencing NULL pointer */
+            if (string == NULL) {
+                string = "<invalid>";
+            }
             printf("%s%s%s",
                    control_value == (int)i ? ">" : "", string,
                    (i < num_enums - 1) ? space : "");
@@ -187,6 +195,10 @@ static void tinymix_print_enum(struct mixer_ctl *ctl, const char *space,
     }
     else {
         string = mixer_ctl_get_enum_string(ctl, control_value);
+        /* Check if string is NULL to prevent dereferencing NULL pointer */
+        if (string == NULL) {
+            string = "<invalid>";
+        }
         printf("%s", string);
     }
 }
