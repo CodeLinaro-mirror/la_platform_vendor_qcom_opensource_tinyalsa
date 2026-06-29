@@ -107,8 +107,10 @@ int mixer_hw_open(unsigned int card, void **data,
         return fd;
 
     hw_data = calloc(1, sizeof(*hw_data));
-    if (!hw_data)
+    if (!hw_data) {
+        close(fd);
         return -1;
+    }
 
     hw_data->card = card;
     hw_data->fd = fd;
