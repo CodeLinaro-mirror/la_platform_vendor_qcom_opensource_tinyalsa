@@ -437,7 +437,7 @@ int mixer_plugin_open(unsigned int card, void **data,
 
     }
 
-    dl_hdl = dlopen(so_name, RTLD_NOW);
+    dl_hdl = dlopen(so_name, RTLD_NOW|RTLD_NODELETE);
     if (!dl_hdl) {
         fprintf(stderr, "%s: unable to open %s\n",
                 __func__, so_name);
