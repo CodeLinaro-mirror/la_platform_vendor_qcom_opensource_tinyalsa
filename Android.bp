@@ -1,4 +1,14 @@
-cc_library {
+soong_config_module_type {
+    name: "tinyalsa_cc_library",
+    module_type: "cc_library",
+    config_namespace: "qti",
+    bool_variables: ["AUDIO_SDV_APEX_ENABLED"],
+    properties: [
+        "apex_available",
+    ],
+}
+
+tinyalsa_cc_library {
     name: "libqti-tinyalsa",
     vendor: true,
     owner: "qti",
@@ -15,6 +25,14 @@ cc_library {
     export_include_dirs: ["include"],
     local_include_dirs: ["include"],
     shared_libs: ["libc","libdl"],
+    soong_config_variables: {
+        AUDIO_SDV_APEX_ENABLED: {
+            apex_available: [
+                "//apex_available:platform",
+                "//apex_available:anyapex",
+            ],
+        },
+    },
 }
 
 cc_binary {
