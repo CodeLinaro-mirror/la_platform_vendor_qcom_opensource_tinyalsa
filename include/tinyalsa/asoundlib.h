@@ -56,6 +56,11 @@ struct pcm;
                                    * restart the stream.
                                    */
 #define PCM_MONOTONIC  0x00000008 /* see pcm_get_htimestamp */
+#define PCM_TIMESTAMP  0x00000010 /* vendor plugin extension: buffer passed to
+                                   * pcm_readi/pcm_read is a vendor-specific
+                                   * wrapper struct carrying a timestamp field,
+                                   * not a plain sample buffer
+                                   */
 
 /* PCM runtime states */
 #define	PCM_STATE_OPEN		0
